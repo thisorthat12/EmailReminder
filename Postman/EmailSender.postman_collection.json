@@ -1,0 +1,43 @@
+{
+	"info": {
+		"_postman_id": "_postman_id",
+		"name": "Email Sender",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "_exporter_id"
+	},
+	"item": [
+		{
+			"name": "Step function",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "apiKey",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"input\": \"{\\\"sendTime\\\": \\\"timeToSendEmail\\\",\\\"queryStringParameters\\\": {\\\"subject\\\": \\\"subject\\\",\\\"body\\\": \\\"body\\\",\\\"sender\\\": \\\"emailSender\\\",\\\"recipient\\\": \\\"emailRecipient\\\"}}\",\n   \"name\": \"executionName\",\n   \"stateMachineArn\": \"stateMachineArn\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "stepFunctionAPIurl",
+					"protocol": "https",
+					"host": [
+						"host"
+					],
+					"path": [
+						"path"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
