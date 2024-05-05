@@ -1,123 +1,145 @@
-import 'package:english_words/english_words.dart';
+import 'package:email_reminder/form.dart';
+import 'package:email_reminder/isar_database.dart';
+import 'package:email_reminder/item.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:collection/collection.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    MaterialApp(
+      home: MyApp(),
+    )
+  );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  late IsarDatabase isarDatabase;
+
+  List<bool> _selected = [];
+
+  @override
+  void initState() {
+    super.initState();
+    isarDatabase = IsarDatabase();
+  }
+  
+  late Future<List<Item>> _items = _getAllItems();
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => MyAppState(),
-      child: MaterialApp(
-        title: 'Namer App',
-        theme: ThemeData(
-          useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
-        ),
-        home: MyHomePage(),
-      ),
-    );
-  }
-}
-
-class MyAppState extends ChangeNotifier {
-  var current = WordPair.random();
-
-  void getNext() {
-    current = WordPair.random();
-    notifyListeners();
-  }
-
-  var favorites = <WordPair>[];
-
-  void toggleFavorite() {
-    if (favorites.contains(current)) {
-      favorites.remove(current);
-    } else {
-      favorites.add(current);
-    }
-    notifyListeners();
-  }
-}
-
-class MyHomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
-    var pair = appState.current;
-
-    // ↓ Add this.
-    IconData icon;
-    if (appState.favorites.contains(pair)) {
-      icon = Icons.favorite;
-    } else {
-      icon = Icons.favorite_border;
-    }
-
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            BigCard(wordPair: pair),
-            SizedBox(height: 10),
-            Row(
-              mainAxisSize: MainAxisSize.min,
+      appBar: AppBar(
+        title: Text('DataTable Demo'),
+      ),
+     /*  body: StreamBuilder(
+        stream: listenToItems(),
+        builder:(context, snapshot) {
+          if (snapshot.hasData && snapshot.connectionState == ConnectionState.done) {
+            return ListView(
               children: [
-
-                // ↓ And this.
-                ElevatedButton.icon(
-                  onPressed: () {
-                    appState.toggleFavorite();
-                  },
-                  icon: Icon(icon),
-                  label: Text('Like'),
-                ),
-                SizedBox(width: 10),
-
-                ElevatedButton(
-                  onPressed: () {
-                    appState.getNext();
-                  },
-                  child: Text('Next'),
+                _createDataTable(snapshot.data!),
+                _createAddField(),
+              ],
+            );
+          }
+          return const Center(child: CircularProgressIndicator());
+        },
+      ) */
+      body: FutureBuilder(
+        future: _items,
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          if (snapshot.hasData && snapshot.connectionState == ConnectionState.done) {
+            return ListView(
+              children: [
+                _createDataTable(snapshot.data),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AddForm(isarDatabase: isarDatabase),
+                          ),
+                        );
+                        setState(() {
+                          _items = _getAllItems();
+                        });
+                      },
+                      child: Text('Next'),
+                    ),
+                  ],
                 ),
               ],
-            ),
-          ],
-        ),
+            );
+          }
+          return const Center(child: CircularProgressIndicator());
+        },
       ),
     );
   }
-}
 
+  Future<List<Item>> _getAllItems() {
+    return isarDatabase.getAllItems();
+  }
 
-class BigCard extends StatelessWidget {
-  const BigCard({
-    super.key,
-    required this.wordPair,
-  });
+  Stream<List<Item>> listenToItems() {
+    return isarDatabase.listenToItems();
+  }
+  
+  DataTable _createDataTable(List<Item> items) {
+    return DataTable(columns: _createColumns(), rows: _createRows(items));
+  }
+  
+  List<DataColumn> _createColumns() {
+    return [
+      DataColumn(label: Text('Name')),
+      DataColumn(label: Text('Bought Date')),
+      DataColumn(label: Text('Expiry Date'))
+    ];
+  }
+  
+  List<DataRow> _createRows(List<Item> items) {
+    _selected = List<bool>.generate(items.length, (int index) => false);;
+    return items
+        .mapIndexed((index, item) => DataRow(
+                cells: [
+                  DataCell(Text(item.name)),
+                  DataCell(Text(item.boughtTime.toString())),
+                  DataCell(Text(item.expiryTime.toString()))
+                ],
+                selected: _selected[index],
+                onSelectChanged: (bool? selected) {
+                  setState(() {
+                    _selected[index] = selected!;
+                  });
+                }))
+        .toList();
+  }
 
-  final WordPair wordPair;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final style = theme.textTheme.displayMedium!.copyWith(
-      color: theme.colorScheme.onPrimary,
-    );
-
-
-    return Card(
-      color: theme.colorScheme.primary,
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Text(wordPair.asLowerCase, style: style, semanticsLabel: "${wordPair.first} ${wordPair.second}",),
-      ),
+  Row _createAddField() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AddForm(isarDatabase: isarDatabase),
+              ),
+            );
+          },
+          child: Text('Next'),
+        ),
+      ],
     );
   }
 }
