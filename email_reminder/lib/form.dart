@@ -28,7 +28,8 @@ class _AddFormState extends State<AddForm> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text("Title"),
+        centerTitle: true,
+        title: Text("Add a reminder"),
       ),
       body: Column(
         children: <Widget>[
@@ -39,26 +40,57 @@ class _AddFormState extends State<AddForm> {
                   padding: EdgeInsets.all(8.0),
                   child: Form(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                      TextFormField(
-                        controller: nameController,
-                        decoration: const InputDecoration(
-                            hintText: 'Enter the item name', labelText: 'Name'),
+                      SizedBox(
+                        width: 400,
+                        child: TextFormField(
+                          controller: nameController,
+                          decoration: const InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                              borderSide:BorderSide(color: Colors.blueGrey, width: 2.0)),
+                              border: OutlineInputBorder(borderSide: BorderSide()),
+                              fillColor: Colors.white,
+                              filled: true,
+                              prefixIcon: Icon(Icons.account_box),
+                              hintText: 'Enter the item name.', 
+                              labelText: 'Name'),
+                        ),
                       ),
-                      TextFormField(
-                        controller: boughtController,
-                        decoration: const InputDecoration(
-                            hintText: 'Enter the bought date (format: 2012-02-27)', labelText: 'Bought date'),
+                      SizedBox(height: 10,),
+                      SizedBox(
+                        width: 400,
+                        child: TextFormField(
+                          controller: boughtController,
+                          decoration: const InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                              borderSide:BorderSide(color: Colors.blueGrey, width: 2.0)),
+                              border: OutlineInputBorder(borderSide: BorderSide()),
+                              fillColor: Colors.white,
+                              filled: true,
+                              prefixIcon: Icon(Icons.date_range),
+                              hintText: 'Enter the bought date (format: 2012-02-27).', 
+                              labelText: 'Bought date'),
+                        ),
                       ),
-                      TextFormField(
-                        controller: expiresInController,
-                        decoration: const InputDecoration(
-                            hintText: 'Enter in how many months the item will expire',
-                            labelText: 'Expires in'),
+                      SizedBox(height: 10,),
+                      SizedBox(
+                        width: 400,
+                        child: TextFormField(
+                          controller: expiresInController,
+                          decoration: const InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                              borderSide:BorderSide(color: Colors.blueGrey, width: 2.0)),
+                              border: OutlineInputBorder(borderSide: BorderSide()),
+                              fillColor: Colors.white,
+                              filled: true,
+                              prefixIcon: Icon(Icons.date_range),
+                              hintText: 'Enter in how many months the item will expire.',
+                              labelText: 'Expires in'),
+                        ),
                       ),
                       Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Container(
                                 margin:

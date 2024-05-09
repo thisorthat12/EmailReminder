@@ -1,8 +1,10 @@
 import 'package:email_reminder/form.dart';
 import 'package:email_reminder/isar_service.dart';
 import 'package:email_reminder/item.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter/widgets.dart';
 
 void main() {
   runApp(
@@ -33,7 +35,8 @@ class MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('DataTable Demo'),
+        centerTitle: true,
+        title: Text('Email Reminders'),
       ),
       body: FutureBuilder(
         future: _items,
@@ -41,7 +44,7 @@ class MyAppState extends State<MyApp> {
           if (snapshot.hasData && snapshot.connectionState == ConnectionState.done) {
             return ListView(
               children: [
-                _createDataTable(snapshot.data),
+                Align(child: _createDataTable(snapshot.data)),
                 _createAddField(),
               ],
             );
