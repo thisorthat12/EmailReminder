@@ -14,22 +14,20 @@ void main() {
 
 class MyApp extends StatefulWidget {
   @override
-  _MyAppState createState() => _MyAppState();
+  MyAppState createState() => MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class MyAppState extends State<MyApp> {
 
   late IsarDatabase isarDatabase;
 
-  List<bool> _selected = [];
+  late Future<List<Item>> _items = _getAllItems();
 
   @override
   void initState() {
     super.initState();
     isarDatabase = IsarDatabase();
   }
-  
-  late Future<List<Item>> _items = _getAllItems();
 
   @override
   Widget build(BuildContext context) {
@@ -37,20 +35,6 @@ class _MyAppState extends State<MyApp> {
       appBar: AppBar(
         title: Text('DataTable Demo'),
       ),
-     /*  body: StreamBuilder(
-        stream: listenToItems(),
-        builder:(context, snapshot) {
-          if (snapshot.hasData && snapshot.connectionState == ConnectionState.done) {
-            return ListView(
-              children: [
-                _createDataTable(snapshot.data!),
-                _createAddField(),
-              ],
-            );
-          }
-          return const Center(child: CircularProgressIndicator());
-        },
-      ) */
       body: FutureBuilder(
         future: _items,
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
@@ -58,25 +42,7 @@ class _MyAppState extends State<MyApp> {
             return ListView(
               children: [
                 _createDataTable(snapshot.data),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => AddForm(isarDatabase: isarDatabase),
-                          ),
-                        );
-                        setState(() {
-                          _items = _getAllItems();
-                        });
-                      },
-                      child: Text('Next'),
-                    ),
-                  ],
-                ),
+                _createAddField(),
               ],
             );
           }
@@ -107,7 +73,6 @@ class _MyAppState extends State<MyApp> {
   }
   
   List<DataRow> _createRows(List<Item> items) {
-    _selected = List<bool>.generate(items.length, (int index) => false);;
     return items
         .mapIndexed((index, item) => DataRow(
                 cells: [
@@ -115,12 +80,12 @@ class _MyAppState extends State<MyApp> {
                   DataCell(Text(item.boughtTime.toString())),
                   DataCell(Text(item.expiryTime.toString()))
                 ],
-                selected: _selected[index],
-                onSelectChanged: (bool? selected) {
-                  setState(() {
-                    _selected[index] = selected!;
-                  });
-                }))
+                onLongPress: () async {
+                  _showDialog(item.id).then((_) => setState(() {
+                    _items = _getAllItems();
+                  }));
+                },
+                ))
         .toList();
   }
 
@@ -135,11 +100,50 @@ class _MyAppState extends State<MyApp> {
               MaterialPageRoute(
                 builder: (context) => AddForm(isarDatabase: isarDatabase),
               ),
+            ).then((_) => setState(() {
+                _items = _getAllItems();
+              })
             );
           },
-          child: Text('Next'),
+          child: Text('Add'),
         ),
       ],
+    );
+  }
+
+  Future<void> _showDialog(int id) async {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+                title: Text("Delete item?"),
+            titleTextStyle: 
+              TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.black,fontSize: 20),
+              actionsOverflowButtonSpacing: 20,
+              actions: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  }, 
+                  child: Text("Back"),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    isarDatabase.delete(id);
+                    Navigator.of(context).pop(true);
+                  }, 
+                  child: Text("Delete"),
+                ),
+              ],
+              content: Text("Deleted successfully"),
+              );
+          },
+        );
+      },
     );
   }
 }

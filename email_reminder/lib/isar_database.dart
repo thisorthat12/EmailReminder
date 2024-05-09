@@ -1,3 +1,4 @@
+
 import 'package:email_reminder/item.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
@@ -47,5 +48,17 @@ class IsarDatabase {
   Stream<List<Item>> listenToItems() async* {
     final isar = await db;
     yield* isar.items.where().watch();
+  }
+
+  Future<void> delete(int id) async {
+    final isar = await db;
+    isar.writeTxnSync<bool>(() => isar.items.deleteSync(id));
+  }
+
+  void deleteItem(int id) async {
+    final isar = await db;
+    await isar.writeTxn(() async {
+      await isar.items.delete(id);
+    });
   }
 }
