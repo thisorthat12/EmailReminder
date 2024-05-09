@@ -2,23 +2,12 @@
 import 'package:email_reminder/item.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-
-final itemsRepositoryProvider = Provider<IsarDatabase>((ref) {
-  return IsarDatabase();
-});
-
-final itemsListStreamProvider = StreamProvider.autoDispose<List<Item?>>((ref) {
-  final itemsRepository = ref.watch(itemsRepositoryProvider);
-  return itemsRepository.listenToItems();
-});
-
-class IsarDatabase {
+class IsarService {
 
   late Future<Isar> db;
 
-  IsarDatabase() {
+  IsarService() {
     db = openDB();
   }
 
@@ -45,20 +34,8 @@ class IsarDatabase {
     return await isar.items.where().findAll();
   }
 
-  Stream<List<Item>> listenToItems() async* {
-    final isar = await db;
-    yield* isar.items.where().watch();
-  }
-
-  Future<void> delete(int id) async {
+  Future<void> deleteItem(int id) async {
     final isar = await db;
     isar.writeTxnSync<bool>(() => isar.items.deleteSync(id));
-  }
-
-  void deleteItem(int id) async {
-    final isar = await db;
-    await isar.writeTxn(() async {
-      await isar.items.delete(id);
-    });
   }
 }

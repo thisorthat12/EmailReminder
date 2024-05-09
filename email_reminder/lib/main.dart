@@ -1,5 +1,5 @@
 import 'package:email_reminder/form.dart';
-import 'package:email_reminder/isar_database.dart';
+import 'package:email_reminder/isar_service.dart';
 import 'package:email_reminder/item.dart';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
@@ -19,14 +19,14 @@ class MyApp extends StatefulWidget {
 
 class MyAppState extends State<MyApp> {
 
-  late IsarDatabase isarDatabase;
+  late IsarService isarDatabase;
 
   late Future<List<Item>> _items = _getAllItems();
 
   @override
   void initState() {
     super.initState();
-    isarDatabase = IsarDatabase();
+    isarDatabase = IsarService();
   }
 
   @override
@@ -54,10 +54,6 @@ class MyAppState extends State<MyApp> {
 
   Future<List<Item>> _getAllItems() {
     return isarDatabase.getAllItems();
-  }
-
-  Stream<List<Item>> listenToItems() {
-    return isarDatabase.listenToItems();
   }
   
   DataTable _createDataTable(List<Item> items) {
@@ -133,7 +129,7 @@ class MyAppState extends State<MyApp> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    isarDatabase.delete(id);
+                    isarDatabase.deleteItem(id);
                     Navigator.of(context).pop(true);
                   }, 
                   child: Text("Delete"),
