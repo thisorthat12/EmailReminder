@@ -1,16 +1,17 @@
 import 'package:email_reminder/email_send_service.dart';
 import 'package:email_reminder/isar_service.dart';
-import 'package:email_reminder/item.dart';
+import 'package:email_reminder/model/item.dart';
+import 'package:email_reminder/model/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
 
 class AddForm extends StatefulWidget{
   AddForm({
-    required this.isarDatabase,
+    required this.isarService,
     super.key,
   });
 
-  final IsarService isarDatabase;
+  final IsarService isarService;
 
   @override
   State<AddForm> createState() => _AddFormState();
@@ -120,7 +121,7 @@ class _AddFormState extends State<AddForm> {
     DateTime expiryTime = Jiffy.parse(boughtTime).add(months: int.parse(expiresIn)).dateTime;
 
     Item item = Item(name: name, boughtTime: boughtTimeParsed, expiryTime: expiryTime);
-    await widget.isarDatabase.saveItem(item);
+    await widget.isarService.saveItem(item);
     sendEmails(item);
     resetData();
   }

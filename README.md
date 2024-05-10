@@ -10,6 +10,10 @@ Technically
 
 The Isar database is used to store the items locally in the Flutter application.
 
+How to reproduce this project
+
+You will need an AWS account in order to create the Lambda, Step Function and API Gateway. 
+
 Further improvements
 Make it possible to set sender and recipient emails.
 

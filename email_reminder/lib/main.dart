@@ -1,10 +1,10 @@
 import 'package:email_reminder/form.dart';
 import 'package:email_reminder/isar_service.dart';
-import 'package:email_reminder/item.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:email_reminder/model/item.dart';
+import 'package:email_reminder/model/settings.dart';
+import 'package:email_reminder/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
-import 'package:flutter/widgets.dart';
 
 void main() {
   runApp(
@@ -21,14 +21,14 @@ class MyApp extends StatefulWidget {
 
 class MyAppState extends State<MyApp> {
 
-  late IsarService isarDatabase;
+  late IsarService isarService;
 
   late Future<List<Item>> _items = _getAllItems();
 
   @override
   void initState() {
     super.initState();
-    isarDatabase = IsarService();
+    isarService = IsarService();
   }
 
   @override
@@ -37,6 +37,17 @@ class MyAppState extends State<MyApp> {
       appBar: AppBar(
         centerTitle: true,
         title: Text('Email Reminders'),
+        actions: [
+          IconButton(onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SettingsPage(isarService: isarService),
+              ),
+            );
+          }, 
+          icon: Icon(Icons.settings))
+        ],
       ),
       body: FutureBuilder(
         future: _items,
@@ -56,7 +67,7 @@ class MyAppState extends State<MyApp> {
   }
 
   Future<List<Item>> _getAllItems() {
-    return isarDatabase.getAllItems();
+    return isarService.getAllItems();
   }
   
   DataTable _createDataTable(List<Item> items) {
@@ -97,7 +108,7 @@ class MyAppState extends State<MyApp> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => AddForm(isarDatabase: isarDatabase),
+                builder: (context) => AddForm(isarService: isarService),
               ),
             ).then((_) => setState(() {
                 _items = _getAllItems();
@@ -132,7 +143,7 @@ class MyAppState extends State<MyApp> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    isarDatabase.deleteItem(id);
+                    isarService.deleteItem(id);
                     Navigator.of(context).pop(true);
                   }, 
                   child: Text("Delete"),
