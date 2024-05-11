@@ -1,7 +1,6 @@
-import 'package:email_reminder/form.dart';
+import 'package:email_reminder/add_form.dart';
 import 'package:email_reminder/isar_service.dart';
 import 'package:email_reminder/model/item.dart';
-import 'package:email_reminder/model/settings.dart';
 import 'package:email_reminder/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';

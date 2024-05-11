@@ -1,7 +1,6 @@
 import 'package:email_reminder/email_send_service.dart';
 import 'package:email_reminder/isar_service.dart';
 import 'package:email_reminder/model/item.dart';
-import 'package:email_reminder/model/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
 
@@ -46,6 +45,7 @@ class _AddFormState extends State<AddForm> {
                       SizedBox(
                         width: 400,
                         child: TextFormField(
+                          key: const Key('nameField'),
                           controller: nameController,
                           decoration: const InputDecoration(
                               enabledBorder: OutlineInputBorder(
@@ -62,6 +62,7 @@ class _AddFormState extends State<AddForm> {
                       SizedBox(
                         width: 400,
                         child: TextFormField(
+                          key: const Key('boughtField'),
                           controller: boughtController,
                           decoration: const InputDecoration(
                               enabledBorder: OutlineInputBorder(
@@ -78,6 +79,7 @@ class _AddFormState extends State<AddForm> {
                       SizedBox(
                         width: 400,
                         child: TextFormField(
+                          key: const Key('expiryField'),
                           controller: expiresInController,
                           decoration: const InputDecoration(
                               enabledBorder: OutlineInputBorder(
@@ -97,6 +99,7 @@ class _AddFormState extends State<AddForm> {
                                 margin:
                                     EdgeInsets.symmetric(vertical: 10),
                                 child: ElevatedButton(
+                                  key: const Key("submitButton"),
                                   onPressed: () {
                                     addItem();
                                     Navigator.pop(context);
