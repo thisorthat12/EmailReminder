@@ -2,7 +2,8 @@ A project to send email reminders based on when something was bought and when it
 
 The application consists of a home page displaying previously entered items and an input form page where reminders can be created. Whenever a reminder is created, an AWS Step Function is launched. It waits for the expiry time and triggers an AWS Lamda that will send an email reminder. Reminders are sent 1 week before expiry and on the expiry date. Should the expiry date fall within one week of the purchase time, only one email at expiry time will be sent.
 
-![Home Page](images/home.png) ![Adding a reminder](images/addition.png)
+![Home Page](https://github.com/thisorthat12/EmailReminder/assets/133687751/30029f2b-5950-4f7b-a34b-1432667f0b06)
+![Adding a reminder](https://github.com/thisorthat12/EmailReminder/assets/133687751/720fa129-7561-4ace-8743-bedffb76bf6a)
 
 ## Testing
 
@@ -13,7 +14,7 @@ The current test coverage is 91.8%. You can visualise it by running: genhtml cov
 You may have to install lcov.
 This will create a coverage folder in the email_reminder folder. Open the html folder inside this one. You can open the index.html file in a browser to view the coverage of the different classes.
 
-![Application test coverage](https://github.com/thisorthat12/EmailReminder/blob/main/images/coverage.png)
+![Application test coverage](https://github.com/thisorthat12/EmailReminder/assets/133687751/5bab9028-d936-464e-926f-8e3a9d616a2b)
 
 ## Technically
 
