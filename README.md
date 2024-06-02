@@ -2,9 +2,9 @@ A project to send email reminders based on when something was bought and when it
 
 The application consists of a home page displaying previously entered items and an input form page where reminders can be created. Whenever a reminder is created, an AWS Step Function is launched. It waits for the expiry time and triggers an AWS Lamda that will send an email reminder. Reminders are sent 1 week before expiry and on the expiry date. Should the expiry date fall within one week of the purchase time, only one email at expiry time will be sent.
 
-![alt text](images/home.png) ![alt text](images/addition.png)
+![Alt text](images/home.png) ![Alt text](images/addition.png)
 
-Testing
+##Testing
 
 Postman requests are included to test the Step Function API.
 
@@ -13,22 +13,22 @@ The current test coverage is 91.8%. You can visualise it by running: genhtml cov
 You may have to install lcov.
 This will create a coverage folder in the email_reminder folder. Open the html folder inside this one. You can open the index.html file in a browser to view the coverage of the different classes.
 
-![alt text](images/coverage.png)
+![Alt text](images/coverage.png)
 
-Technically
+##Technically
 
 The Isar database is used to store the items locally in the Flutter application.
 
-How to reproduce this project
+##How to reproduce this project
 
 You will need an AWS account in order to create the Lambda, Step Function and API Gateway. 
 Verify sender and recipient emails.
 Api key
 
-Further improvements
+##Further improvements
 Make it possible to set sender and recipient emails.
 
-Useful resources
+##Useful resources
 
 API key for API Gateway
 https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-setup-api-key-with-console.html
