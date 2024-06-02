@@ -13,8 +13,8 @@ class IsarService {
   }
 
   Future<Isar> openDB() async {
-    final dir = await getApplicationDocumentsDirectory();
     if (Isar.instanceNames.isEmpty) {
+      final dir = await getApplicationDocumentsDirectory();
       return await Isar.open(
         [ItemSchema, SettingsSchema],
         inspector: true,

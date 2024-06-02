@@ -1,16 +1,22 @@
 import 'package:email_reminder/email_send_service.dart';
+import 'package:email_reminder/http_service.dart';
 import 'package:email_reminder/isar_service.dart';
 import 'package:email_reminder/model/item.dart';
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
 
+
 class AddForm extends StatefulWidget{
   AddForm({
     required this.isarService,
+    required this.httpService,
+    required this.emailSendService,
     super.key,
   });
 
   final IsarService isarService;
+  final HttpService httpService;
+  final EmailSendService emailSendService;
 
   @override
   State<AddForm> createState() => _AddFormState();
@@ -21,7 +27,6 @@ class _AddFormState extends State<AddForm> {
   final nameController = TextEditingController();
   final boughtController = TextEditingController();
   final expiresInController = TextEditingController();
-  final EmailSendService emailSendService = EmailSendService();
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +124,7 @@ class _AddFormState extends State<AddForm> {
     String name = nameController.text;
     String boughtTime = boughtController.text;
     String expiresIn = expiresInController.text;
-
+    
     DateTime boughtTimeParsed = DateTime.parse(boughtTime);
     DateTime expiryTime = Jiffy.parse(boughtTime).add(months: int.parse(expiresIn)).dateTime;
 
@@ -130,8 +135,8 @@ class _AddFormState extends State<AddForm> {
   }
 
   Future<void> sendEmails(Item item) async {
-    await emailSendService.sendEmailWeekBefore(item);
-    await emailSendService.sendEmailAtExpiry(item);
+    await widget.emailSendService.sendEmailWeekBefore(item);
+    await widget.emailSendService.sendEmailAtExpiry(item);
   }
 
   void resetData() {

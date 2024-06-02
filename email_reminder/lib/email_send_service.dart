@@ -1,4 +1,4 @@
-import 'dart:math';
+import 'package:email_reminder/http_service.dart';
 import 'package:email_reminder/isar_service.dart';
 import 'package:email_reminder/model/settings.dart';
 import 'package:http/http.dart' as http;
@@ -7,17 +7,18 @@ import 'package:jiffy/jiffy.dart';
 
 
 class EmailSendService {
-  EmailSendService();
+  EmailSendService({required this.isarService, required this.httpService});
+  
+  final IsarService isarService;
 
-  final IsarService isarService = IsarService();
-
+  final HttpService httpService;
 
   Future<http.Response> sendEmailAtExpiry(Item item) async {
     Settings settings = await _getSettings();
 
     DateTime sendTime = item.expiryTime;
         
-    return await _post(settings, sendTime, item.name, false);
+    return await httpService.postEmail(settings, _constructJsonBody(sendTime, item.name, settings, false));
   }
 
   Future<http.Response> sendEmailWeekBefore(Item item) async {
@@ -29,7 +30,7 @@ class EmailSendService {
       return http.Response('', 400);
     }
 
-    return await _post(settings, sendTime, item.name, true);
+    return await httpService.postEmail(settings, _constructJsonBody(sendTime, item.name, settings, true));
   }
 
   Future<Settings> _getSettings() async {
@@ -37,16 +38,8 @@ class EmailSendService {
     return settingsList.first;
   }
 
-  Future<http.Response> _post(Settings settings, DateTime sendTime, String itemName, bool weekBefore) async {
-    var response = await http.post(Uri.parse(settings.apiUrl),
-      headers: {"Content-Type": "application/json", "x-api-key": settings.apiKey},
-      body: _constructJsonBody(sendTime, itemName, settings, weekBefore)
-    );
-    return response;
-  }
-
   String _constructJsonBody(DateTime sendTime, String itemName, Settings settings, bool weekBefore) {
-    String executionName = 'Execution${Random().nextInt(10000)}';
+    String executionName = 'Execution$itemName${sendTime.toIso8601String()}';
     String body = weekBefore ? 'Your item $itemName will expire in one week' : 'Your item $itemName has expired';
     return '''{
                 "input": "{\\"sendTime\\": \\"${sendTime.toIso8601String()}+02:00\\",\\"queryStringParameters\\": {\\"subject\\": \\"Expiry notification\\",\\"body\\": \\"$body\\",\\"sender\\": \\"${settings.sender}\\",\\"recipient\\": \\"${settings.recipient}\\"}}",

@@ -44,6 +44,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       SizedBox(
                         width: 400,
                         child: TextFormField(
+                          key: const Key('senderField'),
                           controller: senderController,
                           decoration: const InputDecoration(
                               enabledBorder: OutlineInputBorder(
@@ -60,6 +61,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       SizedBox(
                         width: 400,
                         child: TextFormField(
+                          key: const Key('recipientField'),
                           controller: recipientController,
                           decoration: const InputDecoration(
                               enabledBorder: OutlineInputBorder(
@@ -76,6 +78,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       SizedBox(
                         width: 400,
                         child: TextFormField(
+                          key: const Key('stepFunctionField'),
                           controller: stateMachineController,
                           decoration: const InputDecoration(
                               enabledBorder: OutlineInputBorder(
@@ -92,6 +95,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       SizedBox(
                         width: 400,
                         child: TextFormField(
+                          key: const Key('apiUrlField'),
                           controller: apiUrlController,
                           decoration: const InputDecoration(
                               enabledBorder: OutlineInputBorder(
@@ -108,6 +112,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       SizedBox(
                         width: 400,
                         child: TextFormField(
+                          key: const Key('apiKeyField'),
                           controller: apiKeyController,
                           decoration: const InputDecoration(
                               enabledBorder: OutlineInputBorder(
@@ -127,6 +132,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                 margin:
                                     EdgeInsets.symmetric(vertical: 10),
                                 child: ElevatedButton(
+                                  key: const Key("saveButton"),
                                   onPressed: () {
                                     saveSettings();
                                     Navigator.pop(context);
