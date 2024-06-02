@@ -13,7 +13,7 @@ The current test coverage is 91.8%. You can visualise it by running: genhtml cov
 You may have to install lcov.
 This will create a coverage folder in the email_reminder folder. Open the html folder inside this one. You can open the index.html file in a browser to view the coverage of the different classes.
 
-![Application test coverage]([images/coverage.png](https://github.com/thisorthat12/EmailReminder/blob/main/images/coverage.png))
+![Application test coverage](https://github.com/thisorthat12/EmailReminder/blob/main/images/coverage.png)
 
 ## Technically
 
