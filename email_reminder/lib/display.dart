@@ -62,14 +62,17 @@ class _DisplayState extends State<Display> {
     );
   }
 
+  /* Retrieves all items to be displayed. */
   Future<List<Item>> _getAllItems() {
     return widget.isarService.getAllItems();
   }
   
+  /* Creates a table containing all items to be displayed. */
   DataTable _createDataTable(List<Item> items) {
     return DataTable(columns: _createColumns(), rows: _createRows(items));
   }
   
+  /* The names of the columns on the home page. */
   List<DataColumn> _createColumns() {
     return [
       DataColumn(label: Text('Name')),
@@ -78,6 +81,7 @@ class _DisplayState extends State<Display> {
     ];
   }
   
+  /* Creates an item row to be displayed on the home page. */
   List<DataRow> _createRows(List<Item> items) {
     return items
         .mapIndexed((index, item) => DataRow(
@@ -95,6 +99,8 @@ class _DisplayState extends State<Display> {
         .toList();
   }
 
+  /* Displays an "add" button that when pressed displays the form to add a new item.
+     After returning from the form, the home page is rebuilt. */
   Row _createAddField() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -118,6 +124,9 @@ class _DisplayState extends State<Display> {
     );
   }
 
+  /* A dialog to be shown after long pressing an item.
+     The selected item can be deleted through this dialog.
+     Backing out or deleting will return the user to the home page. */
   Future<void> _showDialog(int id) async {
     return showDialog(
       context: context,

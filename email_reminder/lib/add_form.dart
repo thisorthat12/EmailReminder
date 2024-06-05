@@ -120,6 +120,7 @@ class _AddFormState extends State<AddForm> {
     );
   }
 
+  /* Adds an item to the database. */
   Future<void> addItem() async {
     String name = nameController.text;
     String boughtTime = boughtController.text;
@@ -131,15 +132,17 @@ class _AddFormState extends State<AddForm> {
     Item item = Item(name: name, boughtTime: boughtTimeParsed, expiryTime: expiryTime);
     await widget.isarService.saveItem(item);
     sendEmails(item);
-    resetData();
+    clearFormFields();
   }
 
+  /* Calls the email send service to send the emails. */
   Future<void> sendEmails(Item item) async {
     await widget.emailSendService.sendEmailWeekBefore(item);
     await widget.emailSendService.sendEmailAtExpiry(item);
   }
 
-  void resetData() {
+  /* Clears the fields of the form. */
+  void clearFormFields() {
     nameController.clear();
     boughtController.clear();
     expiresInController.clear();

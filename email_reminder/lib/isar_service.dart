@@ -12,6 +12,7 @@ class IsarService {
     db = openDB();
   }
 
+  /* Opens a database instance should it not exist already. */
   Future<Isar> openDB() async {
     if (Isar.instanceNames.isEmpty) {
       final dir = await getApplicationDocumentsDirectory();

@@ -152,6 +152,7 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
+  /* Saves the settings to the database. */
   Future<void> saveSettings() async {
     String sender = senderController.text;
     String recipient = recipientController.text;
