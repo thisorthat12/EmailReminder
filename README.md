@@ -1,4 +1,8 @@
-## A project to send email reminders based on when something was bought and when it expires. It consists of a Flutter desktop application, an AWS Step Function and an AWS Lambda Python function.
+# Email Reminder
+
+**A project to send email reminders based on when something was bought and when it expires. It consists of a Flutter desktop application, an AWS Step Function and an AWS Lambda Python function.**
+
+-------------------------------------------
 
 The application consists of a home page displaying previously entered items and an input form page where reminders can be created. Whenever a reminder is created, an AWS Step Function is launched. It waits for the expiry time and triggers an AWS Lamda that will send an email reminder. Reminders are sent 1 week before expiry and on the expiry date. Should the expiry date fall within one week of the purchase time, only one email at expiry time will be sent.
 
