@@ -42,7 +42,7 @@ class _DisplayState extends State<Display> {
               ),
             );
           }, 
-          icon: Icon(Icons.settings))
+          icon: Icon(Icons.settings, size: 40,))
         ],
       ),
       body: FutureBuilder(
