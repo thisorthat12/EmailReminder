@@ -9,6 +9,21 @@ The application consists of a home page displaying previously entered items and 
 ![Home Page](https://github.com/thisorthat12/EmailReminder/assets/133687751/30029f2b-5950-4f7b-a34b-1432667f0b06)
 ![Adding a reminder](https://github.com/thisorthat12/EmailReminder/assets/133687751/720fa129-7561-4ace-8743-bedffb76bf6a)
 
+
+## How to reproduce this project
+
+### AWS part
+You will need an AWS account in order to create the Lambda, Step Function and API Gateway. To create the Step Function API please follow this [tutorial](https://docs.aws.amazon.com/step-functions/latest/dg/tutorial-api-gateway.html). I also recommend you create an api key and an associated usage plan. That wills secure your api and make sure you don't incur any unexpected costs. 
+
+You should also [create](https://docs.aws.amazon.com/ses/latest/dg/creating-identities.html#verify-email-addresses-procedure) and [verify](https://docs.aws.amazon.com/ses/latest/dg/creating-identities.html#just-verify-email-proc) the sender and recipient email identities you intend to use in AWS SES. 
+
+Please note down your sender email address, recipient email address, Step Function ARN, API url and API key. You will need these later on.
+
+### Flutter part
+Clone the repository to the directory of your choice. To run the application from the command line, navigate to the email_reminder folder within the repository and run: "flutter run lib/main.dart". Choose your desktop OS should the choice present itself. The application should show up auickly. On the upper right of the window, press the settings icon and fill in the fields with what you wrote down.
+
+You are good to go now!
+
 ## Testing
 
 Postman requests are included to test the Step Function API. Fill in the "x-api-key", "sender", "recipient", "stateMachineArn" and "stepFunctionAPIurl" fields with the values from the [AWS part](#aws-part). For the "sendTime" field, you can choose when you'd like the email to be sent. Subject and body can be whatever you like. For the "name", you should use a unique value each time you make a request. 
@@ -22,19 +37,6 @@ This will create a coverage folder in the email_reminder folder. You can open th
 ## Technically
 
 The Isar database is used to store the items locally in the Flutter application.
-
-## How to reproduce this project
-
-### AWS part
-You will need an AWS account in order to create the Lambda, Step Function and API Gateway. To create the Step Function API please follow this [tutorial](https://docs.aws.amazon.com/step-functions/latest/dg/tutorial-api-gateway.html). I also recommend you create an api key and an associated usage plan. That wills secure your api and make sure you don't incur any unexpected costs. 
-
-You should also [create](https://docs.aws.amazon.com/ses/latest/dg/creating-identities.html#verify-email-addresses-procedure) and [verify](https://docs.aws.amazon.com/ses/latest/dg/creating-identities.html#just-verify-email-proc) the sender and recipient email identities you intend to use in AWS SES. 
-
-Please note down your sender email address, recipient email address, Step Function ARN, API url and API key. You will need these later on.
-
-Clone the repository to the directory of your choice. To run the application from the command line, navigate to the email_reminder folder within the repository and run: "flutter run lib/main.dart". Choose your desktop OS should the choice present itself. The application should show up auickly. On the upper right of the window, press the settings icon and fill in the fields with what you wrote down.
-
-You are good to go now!
 
 ## Further improvements
 Make it possible to set sender and recipient emails.
