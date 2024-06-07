@@ -5,6 +5,7 @@ import 'package:email_reminder/isar_service.dart';
 import 'package:email_reminder/model/item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/intl.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:http/http.dart' as http;
@@ -13,6 +14,9 @@ import 'display_test.mocks.dart';
 
 @GenerateMocks([IsarService, HttpService, EmailSendService])
 void main() {
+
+  final DateFormat dateFormatter = DateFormat('yyyy-MM-dd');
+  
   testWidgets('OK', (tester) async {
     MockIsarService mockIsarService = MockIsarService();
     MockHttpService mockHttpService = MockHttpService();
@@ -30,8 +34,8 @@ void main() {
     await tester.pump();
 
     expect(find.text("name"), findsOneWidget);
-    expect(find.text(item.boughtTime.toString()), findsOneWidget);
-    expect(find.text(item.expiryTime.toString()), findsOneWidget); 
+    expect(find.text(dateFormatter.format(item.boughtTime)), findsOneWidget);
+    expect(find.text(dateFormatter.format(item.expiryTime)), findsOneWidget); 
 
     final addButton = find.byKey(const Key("addButton"));
     await tester.tap(addButton);
