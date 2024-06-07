@@ -6,6 +6,7 @@ import 'package:email_reminder/isar_service.dart';
 import 'package:email_reminder/model/item.dart';
 import 'package:email_reminder/settings_page.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class Display extends StatefulWidget{
   Display({
@@ -26,6 +27,8 @@ class Display extends StatefulWidget{
 class _DisplayState extends State<Display> {
 
   late Future<List<Item>> _items = _getAllItems();
+
+  final DateFormat dateFormatter = DateFormat('yyyy-MM-dd');
 
   @override
   Widget build(BuildContext context) {
@@ -87,8 +90,8 @@ class _DisplayState extends State<Display> {
         .mapIndexed((index, item) => DataRow(
                 cells: [
                   DataCell(Text(item.name,)),
-                  DataCell(Text(item.boughtTime.toString())),
-                  DataCell(Text(item.expiryTime.toString()))
+                  DataCell(Text(dateFormatter.format(item.boughtTime))),
+                  DataCell(Text(dateFormatter.format(item.expiryTime)))
                 ],
                 onLongPress: () async {
                   _showDialog(item.id).then((_) => setState(() {
