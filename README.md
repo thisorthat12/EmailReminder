@@ -6,7 +6,7 @@
 
 The application consists of a home page displaying previously entered items and an input form page where reminders can be created. Whenever a reminder is created, an AWS Step Function is launched. It waits for the expiry time and triggers an AWS Lamda that will send an email reminder. Reminders are sent 1 week before expiry and on the expiry date. Should the expiry date fall within one week of the purchase time, only one email at expiry time will be sent.
 
-![Home Page](https://github.com/thisorthat12/EmailReminder/assets/133687751/30029f2b-5950-4f7b-a34b-1432667f0b06)
+![Home Page](https://github.com/thisorthat12/EmailReminder/assets/133687751/754c5d32-5f2d-40d5-97fd-2acb9b14a13c)
 ![Adding a reminder](https://github.com/thisorthat12/EmailReminder/assets/133687751/720fa129-7561-4ace-8743-bedffb76bf6a)
 
 
