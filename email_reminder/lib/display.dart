@@ -27,8 +27,9 @@ class Display extends StatefulWidget{
 class _DisplayState extends State<Display> {
 
   late Future<List<Item>> _items = _getAllItems();
-
   final DateFormat dateFormatter = DateFormat('yyyy-MM-dd');
+  bool isAscending = true;
+  int sortColumnIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -72,15 +73,31 @@ class _DisplayState extends State<Display> {
   
   /* Creates a table containing all items to be displayed. */
   DataTable _createDataTable(List<Item> items) {
-    return DataTable(columns: _createColumns(), rows: _createRows(items));
+    sortByExpiry(isAscending, items);
+    return DataTable(
+      sortAscending: isAscending,
+      sortColumnIndex: sortColumnIndex,
+      columns: _createColumns(items), 
+      rows: _createRows(items));
+  }
+
+  void sortByExpiry(bool ascending, List<Item> items) {
+    if (ascending) {
+      items.sort((a, b) => a.expiryTime.compareTo(b.expiryTime));
+    } else {
+      items.sort((a, b) => a.expiryTime.compareTo(b.expiryTime));
+    }
   }
   
   /* The names of the columns on the home page. */
-  List<DataColumn> _createColumns() {
+  List<DataColumn> _createColumns(List<Item> items) {
     return [
-      DataColumn(label: Text('Name')),
-      DataColumn(label: Text('Bought Date')),
-      DataColumn(label: Text('Expiry Date'))
+      DataColumn(
+        label: Text('Name')),
+      DataColumn(
+        label: Text('Bought Date')),
+      DataColumn(
+        label: Text('Expiry Date'))
     ];
   }
   
