@@ -1,4 +1,3 @@
-import 'package:email_reminder/model/item.dart';
 import 'package:email_reminder/model/settings.dart';
 import 'package:flutter_test/flutter_test.dart';
 
